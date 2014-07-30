@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Methodology - NextVideoGame.com</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/cover2.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"> </h3>
+              <ul class="nav masthead-nav">
+				<li>NextVideoGame.com</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="#">Methodology</a></li>
+				<li><a href="contact.html">About/Contact</a></li>
+              </ul>
+			</div>
+		  </div>
+		</div>		  
+		  
+		  
+
+	
+	
+    <div class="container">
+
+
+
+      <div class="row">
+
+
+	  
+        <div class="col-sm-7 blog-main">
+
+	  <div class="blog-header">
+        <h1 class="blog-title">Methodology</h1>
+        <p class="lead blog-description">Recommend Steam users the games they really want</p>
+      </div>		
+		
+          <div class="blog-post">
+			<form name='myForm' action='recommendations.php' method='post'>
+			<input type="hidden" name="q" id ="qtobeupdated" value="50,70,130,220,280,320,340,360,380,420"/>
+			<input type="hidden" name="p" value="0,9"/>
+			</form>
+			<script type='text/javascript'>
+			function recommend(){ 
+				document.forms["myForm"].submit();
+			}
+			</script>
+			
+			
+			<h2 id ="problem"> The problem </h2>
+			<br>
+            <p>Adam has just spent his last 14 hours on Half-Life 2. In fact, he has bought all 9 titles from the series and has spent 2000 hours of his entire life on it. Although he really enjoys interacting with other Half-Life users on the Steam website where he has purchased his game from, he can't help but wonder whether he has missed out from games other than Half Life. </p>
+			<p>Naturally, he went back to Steam's website for clues to his next favourite game. He took a look at Steam's page for Half Life 2 and clicked on "More Like This Game". <a href="http://store.steampowered.com/recommended/morelike/app/220/"> <font color="#F2F5A9">The page returned 12 games</font></a>, of which 6 of them belongs to the Half-Life series. "I already own them", murmured Adam. Of the remaining 6, he is only interested in Counter-Strike and the Portal series. "This list certainly doesn't look interesting." To his frustration, there isn't a next page button anywhere to load more recommendations. He thinks to himself, "Ah well... shame that I have loads of cash to spend".
+            <p>This would have been a different story for Adam, if he has come to this website and login with his Steam Account. he wouldn't be recommended with games he already owns, and I bet he would probably also like <a href="javascript:recommend()";><font color="#F2F5A9"> the recommendations from the improved algorithm </font></a>, such as Team Fortress, Richochet, Day of Defeat series, Deathmatch Classic and Left 4 Dead too, which were not available on <a href="http://store.steampowered.com/recommended/morelike/app/220/"> <font color="#F2F5A9"> Steam's list of recommendations </font></a>. </p>
+			<p>At the time this article is written, <a href="http://arstechnica.com/gaming/2014/06/steam-reaches-highest-ever-concurrent-user-count-at-over-8-million/"> <font color="#F2F5A9">there are 75 million active Steam users and have at most 8 million concurrent users at a give time </font></a>. Adam's experience is certainly not an isolated case; every Steam user I came across seem to have the same issue too. I have therefore decided to find out how I can solve this issue using data. </p>
+			<br>
+			<hr>
+			<br>
+			<h2 id = "data"> The data </h2>
+			<br>
+            <p>Till date, I have been able to obtain ownership information and playtime statistics of around 6 million Steam users, who has set their profile to "public". The data contains which titles each player owns, how long players have spent on these games throughout their lifetime and the past two weeks. </p>
+			<p>In order to download these users' data via Steam's web API interface, their user IDs are required. I have therefore written a Python script to crawl through user IDs by looking up friends of specified users, and another script to download their data via the API. Only Steam account users can request API access keys, and each access key can only make 100,000 calls per day.</p>
+			<p>As Steam did not provide a web API for information about the games it sell on its website, another script has been written to scrape its Steam store website. Any titles that are not contained in the list of 3,300 games are excluded from my dataset, e.g. titles classified as Demos, Downloadable Content, Mods, Packs, Software etc. All Early Access games are therefore not in scope of this project.</p>
+			<p>To compare the effectiveness of my algorithms against Steam's current algorithm, I have also scraped the list of 12 suggested games that Steam's recommendations engine currently produces for each of the 3,300 games. Please see next section for more details on evaluation criteria. </p>
+			<br>
+			<hr>
+			<br>			
+			<h2 id = "evaluation"> Evaluation criteria* </h2> 
+			<p> (*see <a href="#notes"> <font color="#F2F5A9"> Other Notes </font> </a> for further details) </p>
+			<br>
+			<p> It is easy to remove recommendations that players already own, but it is challenging to evaluate whether the new algorithm is better than the existing one. </p>
+			<p> Since this website originates from the final project for attendance at Data Science Retreat (a 3-month intensive course in data science in Berlin), and since this project is entirely self funded, online experiments are considered infeasible due to resource and time constraints; qualitative results from focus groups do not fit our purpose, as an objective quantitative measure is required in this case. </p>
+			<p> By elimination, offline studies are most appropriate in this situation. Since the user data does not contain any game ratings, Steam's recommendation system is considered "content based". According to G. Shani and A. Gunawardana in their research paper entitled <a href = "http://research.microsoft.com/pubs/115396/evaluationmetrics.tr.pdf"><font color="#F2F5A9">"Evaluating Recommendation Systems" </font> </a>, the best measure to use in this case is "Precision at N", where N = 12 since Steam's recommendation system only produce 12 results for each game, and their list of recommendations provide a basis for comparing effectiveness between different algorithms. </p>
+			<p> What is "Precision at N=12"? Put simply, it tries to estimate in percentage, how many of the top 12 recommendations on average are considered relevant to users. Using part of the data as unseen test set, and assuming users in the test set are interested in the games they already bought, each recommendation algorithm will provide 12 suggestions per user for each game they own. We obtain "Precision at N" by comparing how many of these suggestions match the titles that people actually own in the test set.</p>
+			<p> The dataset has been divided into training, test and holdout sets. To prevent bias, users with user id number ending in 4 or 9 goes to the test set, and user ids ending in 5 or 0 belongs to the holdout set. This means that 60% of the data (around 3.5 million users) remains in the training set.  </p>
+			<p> Based on the above methodology, Steam's own recommendation system has a "Precision at N=12" score of 27% for both test and holdout sets. Will other algorithms beat this?</p>
+			<br>
+			<hr>
+			<br>				
+			<h2 id = "algorithm"> Algorithms tested </h2>
+			<p> Here is one thing I have learnt in DSR: </p>
+			<blockquote>
+			“If you are not embarrassed by the first version of your product, you’ve launched too late.” – Reid Hoffman
+			</blockquote>
+			<p> Till date, since it is a final project within DSR with a project timeframe of 5 weeks, I have chosen to test two of the recommendation algorithms which are considered quicker to build, less computationally expensive with higher scalability, built entirely using Python and techniques such as sparse matrix multiplications. In the later sections, it has been found that both of them has brought significant improvements to the existing Steam recommendation engine. The effectiveness of other more complex algorithms can be explored after the first version.  </p>
+			<br>
+			<h3>Pearson R Correlation</h3>
+			<br>
+			<p> The correlation between the time spent on one game vs time spent on another by each user has been calculated. 4 versions of the Pearson R correlation has been tested: </p>
+			<p> 1. Correlation based on the time spent on each game by each user throughout their lifetime. </p>
+			<p> 2. Same as the above, excluding results where there are less than 5000 users owning both game X and game Y. </p>
+			<p> 3. Correlation based on the time spent on each game by each user only in the past two weeks (when data is downloaded).</p>
+			<p> 4. Same as the above, excluding results where there are less than 5000 users owning both game X and game Y. </p>
+			<br>
+			<h3>Log-Likelihood Ratio</h3>
+			<br>
+			
+			<p> Also integrated within Apache Mahout to calculate item similarity scores, <a href = "http://dl.acm.org/citation.cfm?id=972454"> <font color="#F2F5A9"> LogLikelihood Ratio </font> </a> is a helpful measure to judge which co-occurences are "anomalous" enough to suggest there is a strong relationship; in other words, the more the number of users that owns both game A and B, the more we cannot consider a mere coincidence that people are owning both games together, and LLR attempts to quantify this relationship with a measure. </p>
+			<span class="m"><span class="l"><table border="1" cellpadding="5" cellspacing="0" style="height: 150px; width: 499px;"><tbody>
+			<tr> <td><br />
+			</td> <td>Game A</td> <td>Users that own games other than A</td> </tr>
+			<tr> <td>Game B</td> <td>Owning games A and B together (k_11)</td> <td>Users that own B, but not A (k_12)</td> </tr>
+			<tr> <td>Users that own games other than B</td> <td>Users that own A without B (k_21)</td> <td>Users that own neither(k_22)</td> </tr>
+			</tbody> </table></span></span><span class="m"><span class="l"><br />
+			<p> LLR will turn the statistics in the above table with a score to measure the strength of the relationship between games A and B. In the following example, it will flag up the scenario in the bottom right hand corner: </p>
+			<br>
+			<img src="../bg/LogLikelihood.jpg" width ="100%" alt="Log Likelihood Ratio demonstration">
+			<br>
+			<br>
+			<p> Ted Dunning has explained in <a href = "http://tdunning.blogspot.de/2008/03/surprise-and-coincidence.html"> <font color="#F2F5A9"> his blog </font></a> in details how this score is computed.</p>
+			<br>
+			<hr>
+			<br>				
+			<h2 id = "results"> Results </h2>
+			<br>			
+			<script type='text/javascript' src='https://public.tableausoftware.com/javascripts/api/viz_v1.js'></script><div class='tableauPlaceholder' style='width: 684px; height: 369px;'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableausoftware.com&#47;static&#47;images&#47;Pr&#47;PrecisionatNfordifferentalgorithms&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' width='684' height='369' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableausoftware.com%2F' /> <param name='site_root' value='' /><param name='name' value='PrecisionatNfordifferentalgorithms&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableausoftware.com&#47;static&#47;images&#47;Pr&#47;PrecisionatNfordifferentalgorithms&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div><div style='width:684px;height:22px;padding:0px 10px 0px 0px;color:black;font:normal 8pt verdana,helvetica,arial,sans-serif;'><div style='float:right; padding-right:8px;'><a href='http://www.tableausoftware.com/public/about-tableau-products?ref=https://public.tableausoftware.com/views/PrecisionatNfordifferentalgorithms/Dashboard1' target='_blank'>Learn About Tableau</a></div></div>
+			<p> Steam's own recommendation system has a "Precision at N=12" score of 27% for the test set. Both LLR and Pearson R correlation beats Steam's recommendation system if the right parameters are specified. </p>
+			<p> LLR algorithms, either based on all games that users own or games that users have played in the last 2 weeks, have precision scores of 44% and 39% respectively. </p>
+			<p> In the meantime, Steam's recommendation system beats most of the Pearson R algorithms by 4% or more. However, after filtering out combinations of games where there are less than 5000 players in the past two weeks, the performance of Pearson R correlation has drastically improved from 17% to 44%, which slightly outperformed both of the LLR algorithms when decimal places are considered. </p>
+			<p> By mixing the scores of the two LLR algorithms and the Pearson R correlation based on past two weeks' playtime statistics, it improves the Prevision at N=12. Different weights have been assigned and tested, and the best weights optimises results at 45%. This is a whooping 18% difference over Steam's own recommendation system.</p>			
+			<p> Results have been validated against the holdout set, and the differences between the Precision at N scores from the test and the holdout sets are found to be negligible. </p>			
+			<p> In short, the algorithm on this website takes into account users' game ownership patterns and playtime statistics of the past two weeks.
+			<br>
+			<hr>
+			<br>
+			<h2 id ="further"> Further work </h2>
+			<br>			
+			<p> The methodology evaluates recommendation lists based on a single game that user own, but it fails to evaluate recommendation lists based on users owning more than 1 title. At this moment, this website provides recommendations simply by aggregating the scores of each recommendation by each title that users own. If a user owns all 9 titles from the Half Life series and all 4 titles from Counter Strike Titles, the recommendations that this site generates will be skewed towards Half Life, even though the user may personally prefer Counter Strike over Half Life. Online studies may be required to test out different approaches in aggregating the results. </p>
+			<p> Effectiveness of <a href = "http://www.ibm.com/developerworks/library/os-recommender1/"> <font color="#F2F5A9"> other recommendation algorithms </font> </a> are to be explored at a later date. </p>			
+			<p> As the recommendation system partly depends on user playtime statistics in the past two weeks, a script is still yet to be written to update this website every 2 weeks. </p>			
+			<br>
+			<hr>
+			<br>			
+			<h2 id = "notes"> Other Notes </h2>
+			<br>			
+			<p> 1. There are some issues using "Precision at N=12" directly. For instance, if a Steam user only owns 4 games, even if the recommendation engine recommends all the right games, the average precision at N will be only (4-1) / 12 = 25%. Adjustments have therefore been made to the "Precision at N" measure, so that it will take into account how many games users own, i.e. the "Precision at N" measure in the example will now become 100%. </p>
+			<p> 2. Some 300 games have been excluded from the comparison because their recommendation lists contains Early Access and Demo games, which are considered out of scope in this project. </p>
+			<p> 3. Games, on which users spent less than 30 mins, are excluded from the calculations of Pearson R correlation based on past two weeks of playtime statistics. This has found to improve the performance of the algorithm. Further work is required to optimise performance by modifying this parameter. </p>
+
+			<br>
+			<hr>
+			<br>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-1 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+			<div class="testcontainer">
+				<br>
+				<br>
+				<h4>Summary</h4>
+				<p> The recommendation algorithm on this website beat's <a href = "http://store.steampowered.com/recommended/"> <font color="#F2F5A9"> Steam's own recommendation system </font></a> by a wide margin, <b> 45% vs 27% </b> based on Precision at N=12 measure. Keep on reading to find out how.</p>
+				<br>
+				<h4>Sections</h4>
+				<ol class="list-unstyled">
+				  <li><a href="#problem">The problem</a></li>
+				  <li><a href="#data">The data</a></li>
+				  <li><a href="#evaluation">Evaluation criteria</a></li>
+				  <li><a href="#algorithm">Algorithms tested</a></li>
+				  <li><a href="#results">Results</a></li>
+				  <li><a href="#further">Further work</a></li>
+				  <li><a href="#notes">Other notes</a></li>
+				  </ol>
+				<br>
+
+				<h4>Links</h4>
+				<ol class="list-unstyled">
+				  <li><a href="index.html">Try the algorithm</a></li>
+				  <li><a href="contact.html">More About Kevin Wong</a></li>
+				  <li><a href="http://www.datascienceretreat.com/">Visit Data Science Retreat website</a></li>
+				</ol>
+			</div>
+		  </div>
+
+
+
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+				<div class="cover-container">
+					<div class="mastfoot">
+						<div class="inner">
+							<p><a href="http://www.steampowered.com">Powered by Steam.</a> This site is not affiliated with Valve, Steam, or any of their partners.<br> All copyrights reserved to their respective owners. <br> © Kevin Wong 2014. Background images from Deus Ex: Human Revolution.</p>
+						</div>
+					</div>
+				</div>	  
+	  
+    </div><!-- /.container -->
+	
+	
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+  </body>
+</html>
